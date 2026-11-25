@@ -1,0 +1,110 @@
+[
+   {
+      "WindowState": 2,
+      "LinkTopic": "MDIForm1",
+      "Icon":"AAABAAIAICAQAAAAAADoAgAAJgAAABAQEAAAAAAAKAEAAA4DAAAoAAAAIAAAAEAAAAABAAQAAAAAAIACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADAwMAAAAD/AAD/AAAA//8A/wAAAP8A/wD//wAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAAAAAh3cAAAAAAAAAAAAAAAAACP93AAAAAAAAAAAAAAAAd4//dwAAAAAHAAAAAAd3d3eZmXd3dwAJdwAAAAB3d5mZmZmZmXd4mXcAAAAI//////////////gAAAAAj//////////////3AAAACZmZmZmZmZmZmZmZd3AAAJmZmZmZmZmZmZmZmZl3AAj/////////////////93AI//////////////////gACZmZmZmZmZmZmZmZmZmXAAmZmZmZmZmZmZmZmZmZl3APz8/Pz8////////////93DPz8/Pz8////////////9w/Pz8/Pz5mZmZmZmZmZmZcM/Pz8/PyZmZmZl5mQmZn3f8/Pz8/P//////93AAj//3z8/Pz8/P//////hwAAj/+Pz8/Pz8+ZmZmZiAAAAAmYDPz8/Pz8mZmQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////////////////v////h////wf///gH/f8AAHH+AAAB/AAAB/gAAAfwAAAD4AAAAcAAAADAAAABwAAAAcAAAADAAAAAQAAAAEAAAABAAAAgAAAAcAAAAHgAAAH8QAA//////////////////////////////////8oAAAAEAAAACAAAAABAAQAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADAwMAAAAD/AAD/AAAA//8A/wAAAP8A/wD//wAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAj3AAAAAAd3eZd3CXAAj//////4AAmZmZmZmZcAj////////3CZmZmZmZmZcPz8/P/////3z8/PmZmZmZf8/Pz///cI/8/Pz5mZgACYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAP//AAD//wAA/j8AAOAJAADAAwAAgAMAAAABAAAAAQAAAAAAAAAAAAAACAAAABwAAP//AAD//wAA//8AAA==",
+      "ClientWidth": 13230,
+      "ClientTop": 465,
+      "ClientLeft": -105,
+      "ClientHeight": 11550,
+      "Caption": "FRP",
+      "BackColor": -2147483636,
+      "AutoShowChildren": 0,
+      "FontName":"MS Sans Serif",
+      "_clsid": "{33AD4F70-6699-11CF-B70C-00AA0060D393}",
+      "FormDesignerId": "{DB89119C-47E9-4012-8F0F-0A741AE5CC23}",
+      "Width":882,
+      "Height":770,
+      "Name":"MDIMain",
+"Top":31,
+"Left":-7,
+      "_children": [      {
+         "Caption": "&About",
+         "FontName":"MS Sans Serif",
+         "_clsid": "{33AD4F68-6699-11CF-B70C-00AA0060D393}",
+         "_className": "Menu",
+         "Name":"MNUAbout"
+      },
+            {
+         "Caption": "&Reports",
+         "FontName":"MS Sans Serif",
+         "_clsid": "{33AD4F68-6699-11CF-B70C-00AA0060D393}",
+         "_className": "Menu",
+         "Name":"MNUReports",
+         "_children": [         {
+            "Shortcut": "^A",
+            "Caption": "&Retiree Reports",
+            "FontName":"MS Sans Serif",
+            "_clsid": "{33AD4F68-6699-11CF-B70C-00AA0060D393}",
+            "_className": "Menu",
+            "Name":"MNURetireeReports"
+         }
+         ]
+      },
+            {
+         "Caption": "&File",
+         "FontName":"MS Sans Serif",
+         "_clsid": "{33AD4F68-6699-11CF-B70C-00AA0060D393}",
+         "_className": "Menu",
+         "Name":"MNUFile",
+         "_children": [         {
+            "Shortcut": "^E",
+            "Caption": "&Exit",
+            "FontName":"MS Sans Serif",
+            "_clsid": "{33AD4F68-6699-11CF-B70C-00AA0060D393}",
+            "_className": "Menu",
+            "Name":"MNUExit"
+         },
+                  {
+            "Shortcut": "^M",
+            "Caption": "&Main Menu",
+            "FontName":"MS Sans Serif",
+            "_clsid": "{33AD4F68-6699-11CF-B70C-00AA0060D393}",
+            "_className": "Menu",
+            "Name":"MNUMainMenu"
+         }
+         ]
+      },
+            {
+         "_Version": 393216,
+         "_ExtentY": 847,
+         "_ExtentX": 847,
+         "Top":40,
+         "Left":0,
+         "FontName":"MS Sans Serif",
+         "_className": "MSComDlg.CommonDialog",
+         "Name":"CDBox","_isImportedActiveXControl": true
+      },
+            {
+         "DTREnable": -1,
+         "_Version": 393216,
+         "_ExtentY": 1005,
+         "_ExtentX": 1005,
+         "Top":0,
+         "Left":0,
+         "FontName":"MS Sans Serif",
+         "_className": "MSCommLib.MSComm",
+         "Name":"MSCOM","_isImportedActiveXControl": true
+      },
+            {
+         "Enabled": 0,
+         "Panels":[1,234,234,234,145,143,206,17,157,227,0,170,0,75,184,81,165,103,56,142,134,133,209,17,177,106,0,192,240,40,54,40,147,178,0,0,112,0,0,0,17,32,6,0,208,183,29,146,68,0,0,0,112,0,97,0,110,0,101,0,108,0,49,0,1,0,32,0,0,0,0,0,0,0,1,234,234,234,145,143,206,17,157,227,0,170,0,75,184,81,171,103,56,142,134,133,209,17,177,106,0,192,240,40,54,40,0,0,3,0,9,0,145,153,6,58,188,255,255,255,110,0,117,0,109,0,112,0,97,0,110,0,101,0,108,0,115,0,1,0,0,0,0,0],
+         "_Version": 393216,
+         "Style": 1,
+         "_ExtentY": 450,
+         "_ExtentX": 23336,
+         "Width":882,
+         "Top":753,
+         "ToolTipText": "DBE User Status Bar.",
+         "TabIndex": 0,
+         "Left":0,
+         "Height":17,
+         "Dock":"vbDockBottom",
+         "DockOrder":0,
+         "FontName":"MS Sans Serif",
+         "_className": "MSComctlLib.StatusBar",
+         "Name":"StatusBar","_isImportedActiveXControl": true
+      }
+      ]
+   }
+]

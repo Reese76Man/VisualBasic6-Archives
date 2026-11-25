@@ -1,0 +1,71 @@
+[FormDesignerId("CB925F2F-A551-4C68-AEBB-176ACEC0B5F0")]
+[ClassId("BD22DD76-E923-4D7B-A962-43E888D49299")]
+[InterfaceId("9DB5FF19-8158-4063-BD49-15EAFBC213A1")]
+[EventInterfaceId("E1EF1EC4-B334-4598-BE41-B43DBC18560A")]
+Class frmReport
+    Attribute VB_Name = "frmReport"
+    Attribute VB_GlobalNameSpace = False
+    Attribute VB_Creatable = False
+    Attribute VB_PredeclaredId = True
+    Attribute VB_Exposed = False
+    Option Explicit
+    Dim CRAppl As CRAXDRT.Application
+    Dim Report As CRAXDRT.Report
+    
+    Public Sub ViewReport(rptName As String, adodbRS As ADODB.Recordset, Optional ExportOptions As Byte)
+    '  Call CreateFieldDefFile(adodbRS, MyPath & "test.ttx", True)
+    '  Exit Sub
+      
+      Set CRAppl = New CRAXDRT.Application
+      'Set Report = CRAppl.OpenReport(DefaultPath & rptName & ".rpt")
+      Set Report = CRAppl.OpenReport(MyPath & rptName & ".rpt")
+      Report.Database.Tables(1).SetDataSource adodbRS
+      Report.ReadRecords
+      
+    '  If ExportOptions > 0 Then
+    '    Report.ExportOptions.DestinationType = crEDTDiskFile
+    '    If ExportOptions = 1 Then
+    '        Report.ExportOptions.FormatType = crEFTExactRichText
+    '        Report.ExportOptions.DiskFileName = SavePath & rptName & ".RTF"
+    '    ElseIf ExportOptions = 2 Then
+    '        Report.ExportOptions.FormatType = crEFTWordForWindows
+    '        Report.ExportOptions.DiskFileName = SavePath & rptName & ".DOC"
+    '    ElseIf ExportOptions = 3 Then
+    '        Report.ExportOptions.FormatType = crEFTExcel97
+    '        Report.ExportOptions.DiskFileName = SavePath & rptName & ".XLS"
+    '    End If
+    '    Report.ExportOptions.ExcelExportAllPages = True
+    '    Report.Export False
+    '    Unload Me
+    '  Else
+        CRViewer.ReportSource = Report
+        CRViewer.ViewReport
+    '  End If
+    End Sub
+    
+    Private Sub cmdExit_Click()
+    Unload Me
+    End Sub
+    
+    Private Sub CRViewer_PrintButtonClicked(UseDefault As Boolean)
+      Dim hwnd As Long
+      UseDefault = False
+      Report.PrinterSetup (hwnd)
+      Report.PrintOut True
+    End Sub
+    
+    Private Sub Form_Resize()
+      CRViewer.Top = 0
+      CRViewer.Left = 0
+      CRViewer.Height = ScaleHeight
+      CRViewer.Width = ScaleWidth
+      cmdExit.Left = ScaleWidth - cmdExit.Width
+    End Sub
+    
+    Private Sub Form_Unload(Cancel As Integer)
+      Set CRAppl = Nothing
+      Set Report = Nothing
+    End Sub
+    
+
+End Class

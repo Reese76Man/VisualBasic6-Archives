@@ -1,0 +1,60 @@
+[FormDesignerId("C7F51546-9D77-49C0-AF80-5AFB5F2DF047")]
+[ClassId("823D2062-DC81-4CC0-87A1-960F5AF0A6B2")]
+[InterfaceId("F2BAD27A-0CAC-4718-A536-DBEF22F962D5")]
+[EventInterfaceId("C8C51E93-4390-4ECF-A4CC-3DD90E569862")]
+Class frmEntryReports
+    Attribute VB_Name = "frmEntryReports"
+    Attribute VB_GlobalNameSpace = False
+    Attribute VB_Creatable = False
+    Attribute VB_PredeclaredId = True
+    Attribute VB_Exposed = False
+    Option Explicit
+    
+    Private Sub cmdExit_Click()
+    Unload Me
+    End Sub
+    
+    Private Sub cmdReport_Click()
+    If UserClick = True Then
+        UserClick = False
+        
+        If OptAll.Value = True Then
+            If OptAll2.Value = True Then
+            ElseIf OptActive.Value = True Then
+            ElseIf OPTNonActive.Value = True Then
+            ElseIf OptDeceased.Value = True Then
+            End If
+        
+            DE.EntryReport1 OptAll2.Tag, OptActive.Tag, OPTNonActive.Tag, OptDeceased.Tag
+            frmReport.ViewReport "EntryReport", DE.rsEntryReport1
+            LoadForm frmReport, 1
+            DE.rsEntryReport1.Close
+        End If
+        
+        UserClick = True
+    End If
+    End Sub
+    
+    Private Sub Form_Load()
+    cboGroup.Tag = FillTemplate(cboGroup, "MembershipGroup", "Description", "MembershipGroupID")
+    cboGroup.ListIndex = 0
+    End Sub
+    
+    Private Sub Form_Unload(Cancel As Integer)
+    MDIMain.MNUReports.Enabled = True
+    End Sub
+    
+    Private Sub OptAll_Click()
+    If OptAll.Value = True Then
+        FrameAll.Enabled = True
+    Else
+        FrameAll.Enabled = False
+    End If
+    End Sub
+    
+    Private Sub OptDues_Click()
+    OptAll_Click
+    End Sub
+    
+
+End Class

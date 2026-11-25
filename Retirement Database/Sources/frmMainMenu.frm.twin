@@ -1,0 +1,57 @@
+[FormDesignerId("3C624679-3DCE-43F0-9896-FF1AA65464D1")]
+[ClassId("767CC30E-3FE3-44D3-A5CB-5525D1CA0532")]
+[InterfaceId("4F53C267-9972-470A-861F-0B7FCD127A5B")]
+[EventInterfaceId("B24A857A-D1C2-4567-B602-1F619BE63ED0")]
+Class frmMainMenu
+    Attribute VB_Name = "frmMainMenu"
+    Attribute VB_GlobalNameSpace = False
+    Attribute VB_Creatable = False
+    Attribute VB_PredeclaredId = True
+    Attribute VB_Exposed = False
+    Option Explicit
+    
+    Private Sub cmdExit_Click()
+    If UserClick = True Then
+        StartRoutine Me
+            If MsgBox("Exit FRP Completely?", vbYesNo, "Exit") = vbYes Then
+                ExitProgram
+            End If
+            MDIMain.MNUMainMenu.Enabled = True
+        EndRoutine Me
+        Unload frmMainMenu
+    End If
+    End Sub
+    
+    Private Sub cmdGroups_Click()
+    If UserClick = True Then OpenWindow frmGroup, ""
+    End Sub
+    
+    Private Sub cmdReports_Click()
+    If UserClick = True Then
+        MDIMain.MNUReports.Enabled = False
+        LoadForm frmEntryReports
+    End If
+    End Sub
+    
+    Private Sub cmdSession_Click()
+    If UserClick = True Then OpenWindow frmEntry, ""
+    End Sub
+    
+    Private Sub Form_Load()
+    StartRoutine Me
+        txtDate.Text = SQLDate
+        txtTime.Text = Time$
+        txtCurrentUser.Text = PCName
+    EndRoutine Me
+    End Sub
+    
+    Private Sub Timer_Timer()
+    If Not Left(txtTime.Text, 2) = Left(Time$, 2) Then
+        GetSQLDate
+        txtDate.Text = SQLDate
+    End If
+    txtTime.Text = Time$
+    End Sub
+    
+
+End Class

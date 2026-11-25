@@ -1,0 +1,140 @@
+[FormDesignerId("B0B7CC8C-47AD-401C-9E89-476B0C0F931C")]
+[ClassId("79AABA98-4D9A-4186-A2A2-9231E1DEA4CF")]
+[InterfaceId("41338087-9CD4-4D25-845B-832527D090FA")]
+[EventInterfaceId("95ACBD85-05AC-4FD9-802C-C44228D2CE85")]
+Class frmGroup
+    Attribute VB_Name = "frmGroup"
+    Attribute VB_GlobalNameSpace = False
+    Attribute VB_Creatable = False
+    Attribute VB_PredeclaredId = True
+    Attribute VB_Exposed = False
+    Option Explicit
+    
+    Private Sub cmdAdd_Click()
+    If UserClick = True Then SetObjects 1
+    End Sub
+    
+    Private Sub SetObjects(ComVar As Byte)
+    If ComVar = 0 Then              ' Data Displayed (Reset to Normal View)
+        cmdAdd.Enabled = True
+        cmdExit.Enabled = True
+        cmdCancel.Enabled = False
+        AddNew = False
+        EditChange = False
+    ElseIf ComVar = 1 Then          ' Add Engaged
+        cmdAdd.Enabled = False
+        cmdCancel.Enabled = True
+        cmdDelete.Enabled = False
+        cmdExit.Enabled = False
+        EditCheck cmdUpdate
+        AddNew = True
+        txtGroup.Text = ""
+        txtGroup.SetFocus
+    End If
+    End Sub
+    
+    Private Sub cmdDelete_Click()
+    If UserClick = True Then
+        MsgBox "This group may be associated with multiple entries!", vbExclamation
+        If MsgBox("Are you sure you want to delete this Group?", vbYesNo) = vbYes Then
+            DeleteTemplate "MembershipGroupAssociation", "MembershipGroupID", MSDGGroups.Tag
+            DeleteTemplate "MembershipGroup", "MembershipGroupID", MSDGGroups.Tag
+            GroupUpdate
+        End If
+    End If
+    End Sub
+    
+    Private Sub cmdCancel_Click()
+    If UserClick = True Then GroupUpdate
+    End Sub
+    
+    Private Sub cmdUpdate_Click()
+    If UserClick = True And EditChange = True And Len(Trim(txtGroup.Text)) > 0 Then
+        StartRoutine Me
+        Dim RS As Recordset
+        Set RS = SaveTemplate("MembershipGroup", "MembershipGroupID", MSDGGroups.Tag)
+        
+        If AddNew = True Then RS.AddNew
+        
+        RS!Description = Trim(txtGroup.Text)
+        RS.Update
+        
+        CloseRS RS
+        Set RS = Nothing
+        EndRoutine Me
+        
+        GroupUpdate
+    End If
+    End Sub
+    
+    Private Sub Form_Unload(Cancel As Integer)
+    Xout ""
+    End Sub
+    
+    Private Sub cmdExit_Click()
+    If UserClick = True Then CloseWindow
+    End Sub
+    
+    Private Sub Form_Load()
+    GroupUpdate
+    End Sub
+    
+    Private Sub GridSet(GridObj As MSHFlexGrid, Optional GridNumber As Byte)
+    With GridObj
+      If GridNumber = 0 Then
+        .FormatString = "<|<|"
+        .Cols = 2
+        .ColWidth(0) = 0
+        .ColWidth(1) = 7000
+        .TextMatrix(0, 1) = "Group Membership"
+      End If
+      .Row = 1
+      .Col = 1
+    End With
+    End Sub
+    
+    Private Sub GroupUpdate()
+    DE.MembershipGroup
+        If Not DE.rsMembershipGroup.EOF Then
+            Set MSDGGroups.DataSource = DE.rsMembershipGroup
+            txtGroupMembershipStatus.Visible = False
+            MSDGGroups.Visible = True
+            cmdDelete.Enabled = True
+        Else
+            
+            cmdDelete.Enabled = False
+            txtGroupMembershipStatus.Text = "No Groups Found"
+            txtGroupMembershipStatus.Visible = True
+            MSDGGroups.Visible = False
+        End If
+    DE.rsMembershipGroup.Close
+    
+    GridSet MSDGGroups, 0
+    
+    SetObjects 0
+    
+    MSDGGroups_Click
+    End Sub
+    
+    Private Sub MSDGGroups_Click()
+    StartRoutine Me
+        GridFix MSDGGroups
+    If MSDGGroups.Row > 0 And MSDGGroups.TextMatrix(MSDGGroups.Row, 0) <> "" Then
+        MSDGGroups.Tag = Trim(MSDGGroups.TextMatrix(MSDGGroups.Row, 0))
+        txtGroup.Text = Trim(MSDGGroups.TextMatrix(MSDGGroups.Row, 1))
+    End If
+    EndRoutine Me
+    End Sub
+    Private Sub MSDGGroups_DblClick()
+    MSDGGroups_Click
+    End Sub
+    Private Sub MSDGGroups_RowColChange()
+    MSDGGroups_Click
+    End Sub
+    
+    Private Sub txtgroup_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    
+
+End Class

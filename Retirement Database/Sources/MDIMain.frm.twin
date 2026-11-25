@@ -1,0 +1,81 @@
+[FormDesignerId("DB89119C-47E9-4012-8F0F-0A741AE5CC23")]
+[ClassId("7AAC3939-EA47-4ECE-BB1D-44CC28395B74")]
+[InterfaceId("286B6D9F-82FF-4313-BECE-1217B54D283F")]
+[EventInterfaceId("74C40459-E036-429E-80B4-40AD420FF882")]
+Class MDIMain
+    Attribute VB_Name = "MDIMain"
+    Attribute VB_GlobalNameSpace = False
+    Attribute VB_Creatable = False
+    Attribute VB_PredeclaredId = True
+    Attribute VB_Exposed = False
+    Option Explicit
+    Private Sub MDIForm_Load()
+        StartProgram
+        
+        'MDIMain.StatusBar.SimpleText = "UserID:" & Str(EmployeeID) & "        NTUser: " & NTUser & "        PCID: " & PCName & "        Date: " & SQLDate & "        Security Access: " & SecurityName
+        MDIMain.StatusBar.SimpleText = "PCID: " & PCName & "        Date: " & SQLDate
+        
+    '    If EmployeeID <= 0 Then
+    '        MsgBox (NTUser & " is not in our database.  Contact Administrator.")
+    '        End
+    '    End If
+        
+    '    MSCOMInit MSCOM
+        
+        MNUMainMenu_Click
+    End Sub
+    
+    Private Sub MDIForm_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        If Button = vbRightButton And MNUReports.Enabled = True Then
+            PopupMenu MNUReports
+        End If
+    End Sub
+    
+    Private Sub MDIForm_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+        'Makes it where any unloaded MAIN FORMS will unload without asking to go to Main Menu!
+        ShowForm = True
+    End Sub
+    
+    Private Sub MDIForm_Resize()
+        ' Will resize current form in case user decides to resize MDI form.
+        If FormCount > 0 Then LoadForm FormHistory(FormCount)
+    End Sub
+    
+    Private Sub MDIForm_Unload(Cancel As Integer)
+        'MSCOMUnInit MSCOM
+        ExitProgram
+        End
+    End Sub
+    
+    Private Sub MNUAbout_Click()
+        MNUAbout.Enabled = False
+        LoadForm frmAbout
+    End Sub
+    
+    Private Sub MNUExit_Click()
+        Unload Me
+    End Sub
+    
+    Private Sub MNUMainMenu_Click()
+        ShowForm = False
+        MNUMainMenu.Enabled = False
+        FormCount = 1
+        Set FormHistory(FormCount) = frmMainMenu
+        LoadForm frmMainMenu
+    End Sub
+    
+    Private Sub MNURetireeReports_Click()
+        MNUReports.Enabled = False
+        LoadForm frmEntryReports
+    End Sub
+    
+    Private Sub MSCOM_OnComm()
+        Dim ScannedText As String
+        ScannedText = MSCOMRecieve(MSCOM)
+        If ScannedText > "" Then
+            If FindForm("frmAbout") = True Then frmAbout.txtBarCode.Text = ScannedText
+        End If
+    End Sub
+    
+
+End Class

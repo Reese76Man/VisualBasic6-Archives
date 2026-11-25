@@ -1,0 +1,32 @@
+[FormDesignerId("DA35CF2D-0678-4C2B-966D-D15C0E045C97")]
+[ClassId("DA4EA47C-B3D6-4A6F-81E0-5D26047847AE")]
+[InterfaceId("489BDE07-1457-414B-B56B-53FC01D0637D")]
+[EventInterfaceId("87E64E08-37BE-4F83-B119-3020DDFC83B4")]
+Class frmAbout
+    Attribute VB_Name = "frmAbout"
+    Attribute VB_GlobalNameSpace = False
+    Attribute VB_Creatable = False
+    Attribute VB_PredeclaredId = True
+    Attribute VB_Exposed = False
+    ' MCLE Development: Corey Badeaux.
+    ' Programmed by Corey Michael Badeaux
+    Option Explicit
+    
+    Private Sub cmdOK_Click()
+    Unload Me
+    End Sub
+    
+    Private Sub Form_Activate()
+    cmdOK.SetFocus
+    End Sub
+    
+    Private Sub Form_Load() 'A product so good, we put our name on it!
+      lblversion.Caption = "v" & App.Major & "." & App.Minor & "." & App.Revision
+    End Sub
+    
+    Private Sub Form_Unload(Cancel As Integer)
+    MDIMain.MNUAbout.Enabled = True
+    End Sub
+    
+
+End Class

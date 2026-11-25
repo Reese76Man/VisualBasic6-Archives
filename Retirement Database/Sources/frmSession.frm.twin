@@ -1,0 +1,1204 @@
+[FormDesignerId("EE586E70-B245-4EE0-8172-E30E2A5C64DD")]
+[ClassId("F0E1E48F-92E0-4101-901D-4A55843DF6C1")]
+[InterfaceId("2FBA519A-6F54-4FCA-A610-6E66782ED8C0")]
+[EventInterfaceId("764DC6AF-DF7F-47E5-961A-F2386D21B1C5")]
+Class frmEntry
+    Attribute VB_Name = "frmEntry"
+    Attribute VB_GlobalNameSpace = False
+    Attribute VB_Creatable = False
+    Attribute VB_PredeclaredId = True
+    Attribute VB_Exposed = False
+    Option Explicit
+    
+    
+    Private Sub cmdAdd_Click()
+    If UserClick = True Then SetObjects 1
+    End Sub
+    
+    Private Sub SetObjects(ComVar As Byte)
+    If ComVar = 0 Then              ' Data Displayed (Reset to Normal View)
+        SSTAB.Visible = True
+        UnLockTabs SSTAB
+        FrameSearchGrid.Visible = False
+        FrameCourseHeader.Visible = True
+        FrameCourseHeader.Enabled = True
+        FrameSearch.Enabled = True
+        FrameButtons.Enabled = True
+        FrameGroups.Enabled = True
+        FrameChapters.Enabled = True
+        FrameOccupations.Enabled = True
+        FrameEmailText.Enabled = True
+        FrameEmailAddress.Enabled = True
+        FrameAddressText.Enabled = True
+        FrameAddress.Enabled = True
+        cmdAddEmail.Enabled = True
+        cmdAddAddress.Enabled = True
+        cboGroup.Visible = True
+        cmdAddGroup.Visible = True
+        cmdDelete.Enabled = True
+        cmdDeleteGroup.Visible = True
+        txtSearch.Text = ""
+        cmdUpdate.Enabled = False
+        cmdAdd.Enabled = True
+        cmdExit.Enabled = True
+        cmdCancel.Enabled = False
+        cmdUpdateEmail.Enabled = False
+        cmdUpdateAddress.Enabled = False
+        cmdSendPEmail.Enabled = True
+        cmdAddDues.Enabled = True
+        cmdPicture.Enabled = True
+        txtAddress1.Locked = True
+        txtAddress2.Locked = True
+        txtCity.Locked = True
+        txtState.Locked = True
+        txtZipcode.Locked = True
+        txtPhone.Locked = True
+        txtCountry.Locked = True
+        txtEmail.Locked = True
+        chkBus.Enabled = False
+        AddNew = False
+        EditChange = False
+        AddNew2 = False
+        EditChange2 = False
+        AddNew3 = False
+        EditChange3 = False
+        AddNew4 = False
+        EditChange4 = False
+        AddNew5 = False
+        EditChange5 = False
+        AddNew6 = False
+        EditChange6 = False
+    ElseIf ComVar = 1 Then          ' Add Engaged
+        SSTAB.Tab = 0
+        LockTabs SSTAB
+        EntryImage.Tag = LoadImage(EntryImage, MyPath & "NoImage.Jpg", ShapeBox)
+        cmdAdd.Enabled = False
+        cmdCancel.Enabled = True
+        cmdDelete.Enabled = False
+        cmdExit.Enabled = False
+        cmdSendPEmail.Enabled = False
+        EditCheck cmdUpdate
+        AddNew = True
+        ClearFrame Me, FrameCourseInformation
+        ClearFrame Me, FrameCourseHeader
+        ClearFrame Me, FrameSearch
+        FrameSearch.Enabled = False
+        FrameGroups.Enabled = False
+        FrameChapters.Enabled = False
+        FrameOccupations.Enabled = False
+        MSDGGroups.Visible = False
+        chkWidowed.Value = 0
+        chkDeceased.Value = 0
+        cboGroup.Visible = False
+        txtGroupMembershipStatus.Text = "Add Categories After Save"
+        txtGroupMembershipStatus.Visible = True
+        cmdAddGroup.Visible = False
+        cmdDeleteGroup.Visible = False
+        DTPLocal.Value = SQLDate
+        DTPNational.Value = SQLDate
+        DTPLocal.Value = ""
+        DTPNational.Value = ""
+        txtAddress1.Locked = False
+        txtAddress2.Locked = False
+        txtCity.Locked = False
+        txtState.Locked = False
+        txtZipcode.Locked = False
+        txtPhone.Locked = False
+        txtCountry.Locked = False
+        txtEmail.Locked = False
+        chkBus.Enabled = True
+        txtPrefix.SetFocus
+    ElseIf ComVar = 2 Then          ' Search Engaged
+        SSTAB.Visible = False
+        FrameCourseHeader.Visible = False
+        FrameSearch.Enabled = False
+        FrameSearchGrid.Visible = True
+        FrameButtons.Enabled = False
+    ElseIf ComVar = 3 Then
+        LockTabs SSTAB
+        cmdAddEmail.Enabled = False
+        cmdDelEmail.Enabled = False
+        cmdSetPrimaryEmail.Enabled = False
+        cmdSendEmail.Enabled = False
+        cmdUpdateEmail.Enabled = True
+        FrameAddressText.Enabled = False
+        FrameAddress.Enabled = False
+        FrameCourseHeader.Enabled = False
+        FrameSearch.Enabled = False
+        FrameButtons.Enabled = False
+        FrameEmailText.Visible = True
+        txtEEMail.Text = ""
+        txtEEMail.SetFocus
+        AddNew2 = True
+    ElseIf ComVar = 4 Then
+        LockTabs SSTAB
+        cmdAddAddress.Enabled = False
+        cmdDelAddress.Enabled = False
+        cmdSetPrimaryAddress.Enabled = False
+        cmdUpdateAddress.Enabled = True
+        FrameEmailText.Enabled = False
+        FrameEmailAddress.Enabled = False
+        FrameCourseHeader.Enabled = False
+        FrameSearch.Enabled = False
+        FrameButtons.Enabled = False
+        FrameAddressText.Visible = True
+        ClearFrame Me, FrameAddressText
+        txtSAddress1.SetFocus
+        AddNew3 = True
+    ElseIf ComVar = 5 Then
+        LockTabs SSTAB
+        cmdAddDues.Enabled = False
+        cmdDelDues.Enabled = False
+        cmdUpdateDues.Enabled = True
+        FrameCourseHeader.Enabled = False
+        FrameSearch.Enabled = False
+        FrameButtons.Enabled = False
+        FrameDuesText.Visible = True
+        ClearFrame Me, FrameDuesText
+        DTPDues.Value = SQLDate
+        txtDues.SetFocus
+        AddNew4 = True
+    End If
+    End Sub
+    
+    Private Sub cboEntry_KeyPress(KeyAscii As Integer)
+    If KeyAscii = 13 Then
+        KeyAscii = 0
+        cmdRetrieve_Click
+    End If
+    End Sub
+    
+    Private Sub cmdAddAddress_Click()
+    If UserClick = True Then SetObjects 4
+    End Sub
+    
+    
+    Private Sub cmdAddChapter_Click()
+    If UserClick = True Then
+        If Exists("LocalChapter", "EntryID", Trim(Str(FormCurrentValue)), "LocalChapterNumber", Trim(txtLocalChapterNumber.Text)) = True Then
+            MsgBox "Entry already exists.", vbCritical
+            Exit Sub
+        End If
+        
+        StartRoutine Me
+        Dim RS As Recordset
+        Set RS = SaveTemplate("LocalChapter", "LocalChapterID", FormCurrentValue)
+        
+        RS.AddNew
+        RS!EntryID = FormCurrentValue
+        RS!LocalChapterDate = DTPLocal.Value
+        RS!LocalChapterNumber = Trim(txtLocalChapterNumber.Text)
+        RS.Update
+        
+        CloseRS RS
+        Set RS = Nothing
+        EndRoutine Me
+        
+        FillChapterGrid FormCurrentValue
+    End If
+    End Sub
+    
+    Private Sub cmdAddDues_Click()
+    If UserClick = True Then SetObjects 5
+    End Sub
+    
+    Private Sub cmdAddEmail_Click()
+    If UserClick = True Then SetObjects 3
+    End Sub
+    
+    Private Sub cmdAddOccupation_Click()
+    If UserClick = True Then
+        If Exists("Occupation", "EntryID", Trim(Str(FormCurrentValue)), "Occupation", Trim(txtOccupationDesc.Text)) = True Then
+            MsgBox "Entry already exists.", vbCritical
+            Exit Sub
+        End If
+        
+        StartRoutine Me
+        Dim RS As Recordset
+        Set RS = SaveTemplate("Occupation", "OccupationID", FormCurrentValue)
+        
+        RS.AddNew
+        RS!EntryID = FormCurrentValue
+        RS!Occupation = Trim(txtOccupationDesc.Text)
+        RS!Classification = Trim(txtOccupationClass.Text)
+        RS.Update
+        
+        CloseRS RS
+        Set RS = Nothing
+        EndRoutine Me
+        
+        FillOccupationGrid FormCurrentValue
+    End If
+    End Sub
+    
+    Private Sub cmdDelDues_Click()
+    If UserClick = True Then
+        If MsgBox("Are you sure you want to delete this dues entry?", vbYesNo) = vbYes Then
+            DeleteTemplate "Dues", "DuesID", Trim(MSDGDues.TextMatrix(MSDGDues.Row, 0))
+            EntryUpdate FormCurrentValue
+        End If
+    End If
+    End Sub
+    
+    Private Sub cmdDeleteChapter_Click()
+    If UserClick = True Then
+        If MsgBox("Are you sure you want to delete this chapter?", vbYesNo) = vbYes Then
+            DeleteTemplate "LocalChapter", "LocalChapterID", Trim(MSDGChapters.TextMatrix(MSDGChapters.Row, 0))
+            FillChapterGrid FormCurrentValue
+        End If
+    End If
+    End Sub
+    
+    Private Sub cmdDeleteOccupation_Click()
+    If UserClick = True Then
+        If MsgBox("Are you sure you want to delete this occupation?", vbYesNo) = vbYes Then
+            DeleteTemplate "Occupation", "OccupationID", Trim(MSDGOccupations.TextMatrix(MSDGOccupations.Row, 0))
+            FillOccupationGrid FormCurrentValue
+        End If
+    End If
+    End Sub
+    
+    Private Sub cmdPicture_Click()
+    Dim PictureFile As String
+    If UserClick = True Then
+        PictureFile = BrowseFile("O", MDIMain.CDBox, "Open Picture File")
+        If FileExists(PictureFile) = True Then
+            If LoadImage(EntryImage, PictureFile, ShapeBox) = False Then
+                ShapeBox.Tag = LoadImage(EntryImage, MyPath & "NoImage.Jpg", ShapeBox)
+            Else
+                EditCheck cmdUpdate, cmdAdd, cmdCancel
+            End If
+        End If
+    End If
+    End Sub
+    
+    Private Sub cmdSetPrimaryAddress_Click()
+    If UserClick = True Then
+        SetCommonTableFields "Address", "EntryID", FormCurrentValue, "PreferredAddress", False, True, "AddressID", MSDGAddress.Tag
+        EntryUpdate FormCurrentValue
+    End If
+    End Sub
+    
+    Private Sub cmdSetPrimaryEmail_Click()
+    If UserClick = True Then
+        SetCommonTableFields "Email", "EntryID", FormCurrentValue, "PreferredAddress", False, True, "EmailID", MSDGEmailAddress.Tag
+        EntryUpdate FormCurrentValue
+    End If
+    End Sub
+    
+    Private Sub cmdAddGroup_Click()
+    If UserClick = True Then
+        If Exists("MembershipGroupAssociation", "EntryID", Trim(Str(FormCurrentValue)), "MembershipGroupID", Trim(cboGroup.ItemData(cboGroup.ListIndex))) = True Then
+            MsgBox "Entry is already in this Group.", vbCritical
+            Exit Sub
+        End If
+        
+        StartRoutine Me
+        Dim RS As Recordset
+        Set RS = SaveTemplate("MembershipGroupAssociation", "MembershipGroupAssociationID", FormCurrentValue)
+        
+        RS.AddNew
+        RS!EntryID = FormCurrentValue
+        RS!MembershipGroupID = Trim(cboGroup.ItemData(cboGroup.ListIndex))
+        RS.Update
+        
+        CloseRS RS
+        Set RS = Nothing
+        EndRoutine Me
+        
+        FillMembershipGrid FormCurrentValue
+    End If
+    End Sub
+    
+    Private Sub cmdDelEmail_Click()
+    If UserClick = True Then
+        If MsgBox("Are you sure you want to delete this email address?", vbYesNo) = vbYes Then
+            DeleteTemplate "Email", "EmailID", Trim(MSDGEmailAddress.TextMatrix(MSDGEmailAddress.Row, 0))
+            EntryUpdate FormCurrentValue
+        End If
+    End If
+    End Sub
+    
+    Private Sub cmdDelAddress_Click()
+    If UserClick = True Then
+     If MsgBox("Are you sure you want to delete this address?", vbYesNo) = vbYes Then
+        DeleteTemplate "Address", "AddressID", Trim(MSDGAddress.TextMatrix(MSDGAddress.Row, 0))
+        EntryUpdate FormCurrentValue
+     End If
+    End If
+    End Sub
+    
+    Private Sub cmdDeleteGroup_Click()
+    If UserClick = True Then
+        If MsgBox("Are you sure you want to delete this group?", vbYesNo) = vbYes Then
+            DeleteTemplate "MembershipGroupAssociation", "MembershipGroupAssociationID", Trim(MSDGGroups.TextMatrix(MSDGGroups.Row, 0))
+            FillMembershipGrid FormCurrentValue
+        End If
+    End If
+    End Sub
+    
+    Private Sub cmdDelete_Click()
+    If UserClick = True Then
+        If MsgBox("Are you sure you want to delete this retiree?", vbYesNo) = vbYes Then
+            DeleteTemplate "Entry", "EntryID", FormCurrentValue
+            DeleteTemplate "MembershipGroupAssociation", "EntryID", FormCurrentValue
+            DeleteTemplate "Address", "EntryID", FormCurrentValue
+            DeleteTemplate "Email", "EntryID", FormCurrentValue
+    
+            
+            DE.rsEntryFullNames.Close
+            DE.EntryFullNames
+            cboEntry.RowMember = ""
+            cboEntry.RowMember = "EntryFullNames"
+            cboEntry.Text = ""
+            
+            EntryUpdate ""
+        End If
+    End If
+    End Sub
+    
+    Private Sub cmdSearch_Click()
+    If UserClick = True And Len(txtSearch.Text) > 2 Then
+        StartRoutine Me
+            If FillSearchGrid(cboSearch.ItemData(cboSearch.ListIndex)) = True Then
+                SetObjects 2
+            Else
+                MsgBox "Search criteria yielded no results", vbCritical, "Invalid Search"
+            End If
+        EndRoutine Me
+    Else
+        MsgBox "Search criteria must contain at least 3 characters", vbCritical, "Invalid Search"
+    End If
+    End Sub
+    
+    Private Function FillSearchGrid(OptionFlag As Byte) As Boolean
+    If OptionFlag = 0 Then
+        DE.EntrySearch Trim(txtSearch.Text)
+    'ElseIf OptionFlag = 1 Then
+        'DE.CourseMain 0, "*", Trim(txtSearch.Text) ', "*", "*"
+    'ElseIf OptionFlag = 2 Then
+    '    DE.CourseMain 0, "*", "*", Trim(txtSearch.Text), "*"
+    'ElseIf OptionFlag = 3 Then
+    '    DE.CourseMain 0, "*", "*", "*", Trim(txtSearch.Text)
+    Else
+        FillSearchGrid = False
+        Exit Function
+    End If
+    
+        If Not DE.rsEntrySearch.EOF Then
+            Set MSDGResults.DataSource = DE.rsEntrySearch
+            MSDGResults.Visible = True
+            FillSearchGrid = True
+        Else
+            FillSearchGrid = False
+            MSDGResults.Visible = False
+        End If
+    DE.rsEntrySearch.Close
+    
+    GridSet MSDGResults, 1
+    
+    GridFix MSDGResults
+    End Function
+    
+    Private Sub cmdCancel_Click()
+    If UserClick = True Then EntryUpdate FormPassedValue
+    End Sub
+    
+    Private Sub cmdCancelSelect_Click()
+    Call cmdCancel_Click
+    End Sub
+    
+    Private Sub cmdSelect_Click()
+    ' Select Attorney From Grid
+    If UserClick = True Then
+        StartRoutine Me
+            GridFix MSDGResults
+            EntryUpdate Trim(MSDGResults.TextMatrix(MSDGResults.Row, 0))
+        EndRoutine Me
+    End If
+    End Sub
+    
+    Private Sub cmdSendEmail_Click()
+    If UserClick = True And ValidEmail(txtEEMail.Text) = True Then MailTo txtEEMail.Text
+    End Sub
+    Private Sub cmdSendPEmail_Click()
+    If UserClick = True And ValidEmail(txtEmail.Text) = True Then MailTo txtEmail.Text
+    End Sub
+    
+    Private Sub cmdUpdate_Click()
+    If UserClick = True And EditChange = True Then
+        If Len(txtFirstName.Text) = 0 Or Len(txtLastName.Text) = 0 Then
+            MsgBox "Incomplete Entry, Please complete entry.", vbCritical
+            Exit Sub
+        End If
+        
+        StartRoutine Me
+            Dim RS As Recordset
+            Set RS = SaveTemplate("Entry", "EntryID", FormCurrentValue)
+            
+            If AddNew = True Then RS.AddNew
+                    
+            RS!PicturePath = EntryImage.Tag
+            RS!Active = chkActive.Value
+            RS!Deceased = chkDeceased.Value
+            RS!Widowed = chkWidowed.Value
+            RS!NonMember = chkNonMember.Value
+            RS!Prefix = Trim(txtPrefix.Text)
+            RS!FirstName = Trim(txtFirstName.Text)
+            RS!MiddleName = Trim(txtMiddleName.Text)
+            RS!LastName = Trim(txtLastName.Text)
+            RS!Suffix = Trim(txtSuffix.Text)
+            'RS!LocalChapterDate = Trim(DTPLocal.Value)
+            RS!NationalChapterDate = Trim(DTPNational.Value)
+            'RS!LocalChapterNumber = Trim(txtLocalChapterNumber.Text)
+            RS!NationalChapterNumber = Trim(txtNationalChapterNumber.Text)
+            'RS!OccupationDescription = Trim(txtOccupationDesc.Text)
+            'RS!OccupationClassification = Trim(txtOccupationClass.Text)
+            RS!Comments = Trim(txtComments.Text)
+            RS.Update
+            
+            If AddNew = True Then FormCurrentValue = RS!EntryID
+        
+            CloseRS RS
+            Set RS = Nothing
+            
+            If AddNew = True Then
+                cmdUpdateAddress_Click
+                cmdUpdateEmail_Click
+            End If
+            
+            ' RESET Course Combo Box Data to reflect changes made.
+                DE.rsEntryFullNames.Close
+                DE.EntryFullNames
+                cboEntry.RowMember = ""
+                cboEntry.RowMember = "EntryFullNames"
+                cboEntry.Text = ""
+            
+        EndRoutine Me
+    EntryUpdate FormCurrentValue
+    End If
+    End Sub
+    
+    
+    
+    Private Sub cmdUpdateAddress_Click()
+    Dim Preferred As Boolean
+    If UserClick = True Or AddNew = True Then
+        If Not (Len(txtSAddress1.Text) = 0 Or Len(txtSCity.Text) = 0 Or Len(txtSState.Text) = 0) Then
+            If Exists("Address", "EntryID", Trim(Str(FormCurrentValue))) = False Then
+                Preferred = True
+            Else
+                If AddNew3 = True Then
+                    If MsgBox("Would you like to make this the Preferred Address?", vbYesNo) = vbYes Then
+                        Preferred = True
+                        SetCommonTableFields "Address", "EntryID", FormCurrentValue, "PreferredAddress", False
+                    Else
+                        Preferred = False
+                    End If
+                End If
+            End If
+        
+            StartRoutine Me
+            Dim RS As Recordset
+            Set RS = SaveTemplate("Address", "AddressID", MSDGAddress.Tag)
+        
+            If AddNew3 = True Or AddNew = True Then
+                RS.AddNew
+                RS!PreferredAddress = Preferred
+            End If
+            
+            RS!EntryID = FormCurrentValue
+            RS!Address1 = Trim(txtSAddress1.Text)
+            RS!Address2 = Trim(txtSAddress2.Text)
+            RS!City = Trim(txtSCity.Text)
+            RS!State = Trim(txtSState.Text)
+            RS!ZipCode = Trim(txtSZip.Text)
+            RS!Country = Trim(txtSCountry.Text)
+            RS!Phone = Trim(txtSPhone.Text)
+            RS!BusinessAddress = OptBusYes.Value
+            RS.Update
+        
+            CloseRS RS
+            Set RS = Nothing
+            EndRoutine Me
+        
+            If AddNew = False Then EntryUpdate FormCurrentValue
+        Else
+            If AddNew = False Then
+                MsgBox "Invalid or Incomplete Address entered, Save Cancelled.", vbCritical
+                EntryUpdate FormCurrentValue
+            End If
+            Exit Sub
+        End If
+    End If
+    End Sub
+    
+    Private Sub cmdUpdateDues_Click()
+    If UserClick = True Then
+        If Val(txtDues.Text) > 0 Then
+            StartRoutine Me
+            Dim RS As Recordset
+            Set RS = SaveTemplate("Dues", "DuesID", MSDGDues.Tag)
+        
+            If AddNew4 = True Then RS.AddNew
+            
+            RS!EntryID = FormCurrentValue
+            RS!Amount = Val(txtDues.Text)
+            RS!PaymentDate = DateCheck(DTPDues.Value)
+            RS!Comments = Trim(txtDuesComments.Text)
+            RS.Update
+        
+            CloseRS RS
+            Set RS = Nothing
+            EndRoutine Me
+            
+            EntryUpdate FormCurrentValue
+        Else
+            MsgBox "Invalid Dues Amount entered, Save Cancelled.", vbCritical
+            EntryUpdate FormCurrentValue
+            Exit Sub
+        End If
+    End If
+    End Sub
+    
+    Private Sub cmdUpdateEmail_Click()
+    Dim NewEmailAddress As String
+    Dim Preferred As Boolean
+    If UserClick = True Or AddNew = True Then
+        NewEmailAddress = Trim(txtEEMail.Text)  'InputBox("Enter Email Address:", "Email Address Add")
+        If ValidEmail(NewEmailAddress) = True Then
+            If Exists("Email", "EntryID", Trim(Str(FormCurrentValue)), "EmailAddress", "'" & Trim(NewEmailAddress) & "'") = True Then
+                MsgBox "Email is already in this Group.", vbCritical
+                EntryUpdate FormCurrentValue
+                Exit Sub
+            End If
+            
+            If Exists("Email", "EntryID", Trim(Str(FormCurrentValue))) = False Then
+                Preferred = True
+            Else
+                If AddNew2 = True Then
+                    If MsgBox("Would you like to make this the Preferred Email Address?", vbYesNo) = vbYes Then
+                        Preferred = True
+                        SetCommonTableFields "Email", "EntryID", FormCurrentValue, "PreferredAddress", False
+                    Else
+                        Preferred = False
+                    End If
+                End If
+            End If
+        
+            StartRoutine Me
+            Dim RS As Recordset
+            Set RS = SaveTemplate("Email", "EmailID", MSDGEmailAddress.Tag)
+        
+            If AddNew2 = True Or AddNew = True Then
+                RS.AddNew
+                RS!PreferredAddress = Preferred
+            End If
+            
+            RS!EntryID = FormCurrentValue
+            RS!EmailAddress = LCase(Trim(NewEmailAddress))
+            RS.Update
+        
+            CloseRS RS
+            Set RS = Nothing
+            EndRoutine Me
+        
+            If AddNew = False Then EntryUpdate FormCurrentValue
+            'FillEmailAddressGrid FormCurrentValue
+            If Preferred = True And AddNew = False Then txtEmail.Text = NewEmailAddress
+        Else
+            If AddNew = False Then
+                MsgBox "Invalid or blank Email Address entered, Save Cancelled.", vbCritical
+                EntryUpdate FormCurrentValue
+            End If
+            Exit Sub
+        End If
+    End If
+    End Sub
+    
+    Private Sub MSDGResults_DblClick()
+    Call cmdSelect_Click
+    End Sub
+    Private Sub MSDGResults_RowColChange()
+    GridFix MSDGResults
+    End Sub
+    
+    Private Sub Form_Unload(Cancel As Integer)
+    Xout FormCurrentValue
+    End Sub
+    
+    Private Sub cmdExit_Click()
+    If UserClick = True Then CloseWindow
+    End Sub
+    
+    Private Sub Form_Load()
+    cboGroup.Tag = FillTemplate(cboGroup, "MembershipGroup", "Description", "MembershipGroupID")
+    cboGroup.ListIndex = 0
+    
+    cboSearch.ListIndex = 0
+    SSTAB.Tab = 0
+    
+    EntryUpdate FormPassedValue
+    End Sub
+    
+    Private Sub EntryUpdate(ComVar As String)
+    StartRoutine Me
+        If ComVar = "" Then ComVar = FirstRecord("Entry", "EntryID", "LastName Asc,FirstName Asc")
+            
+        FormCurrentValue = ComVar
+        
+        DE.EntryMain ComVar
+        If DE.rsEntryMain.EOF = False Then
+            txtPrefix.Text = "" & Trim(DE.rsEntryMain!Prefix)
+            txtFirstName.Text = "" & Trim(DE.rsEntryMain!FirstName)
+            txtMiddleName.Text = "" & Trim(DE.rsEntryMain!MiddleName)
+            txtLastName.Text = "" & Trim(DE.rsEntryMain!LastName)
+            txtSuffix.Text = "" & Trim(DE.rsEntryMain!Suffix)
+            txtComments.Text = "" & Trim(DE.rsEntryMain!Comments)
+            txtAddress1.Text = "" & Trim(DE.rsEntryMain!Address1)
+            txtAddress2.Text = "" & Trim(DE.rsEntryMain!Address2)
+            txtCity.Text = "" & Trim(DE.rsEntryMain!City)
+            txtState.Text = "" & Trim(DE.rsEntryMain!State)
+            txtZipcode.Text = "" & Trim(DE.rsEntryMain!ZipCode)
+            txtCountry.Text = "" & Trim(DE.rsEntryMain!Country)
+            txtPhone.Text = PhoneNumberFormat("" & DE.rsEntryMain!Phone, 1)
+            'txtLocalChapterNumber.Text = "" & Trim(DE.rsEntryMain!LocalChapterNumber)
+            txtNationalChapterNumber.Text = "" & Trim(DE.rsEntryMain!NationalChapterNumber)
+            txtEmail.Text = "" & Trim(DE.rsEntryMain!EmailAddress)
+            'txtOccupationDesc.Text = "" & Trim(DE.rsEntryMain!OccupationDescription)
+            'txtOccupationClass.Text = "" & Trim(DE.rsEntryMain!OccupationClassification)
+            'DTPLocal.Value = "" & Trim(DE.rsEntryMain!LocalChapterDate)
+            DTPNational.Value = "" & Trim(DE.rsEntryMain!NationalChapterDate)
+            chkActive.Value = Abs(CInt(DE.rsEntryMain!Active))
+            chkDeceased.Value = Abs(CInt(DE.rsEntryMain!Deceased))
+            chkWidowed.Value = Abs(CInt(DE.rsEntryMain!Widowed))
+            chkNonMember.Value = Abs(CInt(DE.rsEntryMain!NonMember))
+            chkBus.Value = Abs(CInt(DE.rsEntryMain!BusinessAddress))
+            Me.Caption = "Retirees   -   Total Entries: " & Trim(Str("" & DE.rsEntryFullNames.RecordCount))
+            cboEntry.Text = Trim("" & DE.rsEntryMain!FullName)
+            
+            If LoadImage(EntryImage, Trim(DE.rsEntryMain!PicturePath), ShapeBox) = False Then
+                ShapeBox.Tag = LoadImage(EntryImage, MyPath & "NoImage.Jpg", ShapeBox)
+            End If
+        End If
+        CloseRS DE.rsEntryMain
+    
+        FillMembershipGrid FormCurrentValue
+        FillAddressGrid FormCurrentValue
+        FillEmailAddressGrid FormCurrentValue
+        FillDuesGrid FormCurrentValue
+        FillChapterGrid FormCurrentValue
+        FillOccupationGrid FormCurrentValue
+        
+        SetObjects 0
+    EndRoutine Me
+    End Sub
+    
+    Private Sub cmdRetrieve_Click()
+    If UserClick = True And cboEntry.SelectedItem <> cboEntry.Tag Then
+        StartRoutine Me
+        cboEntry.Tag = cboEntry.SelectedItem
+        DE.rsEntryFullNames.Move (Val(cboEntry.Tag) - 1), adBookmarkFirst
+        EntryUpdate Trim(DE.rsEntryFullNames!EntryID)
+    End If
+    End Sub
+    
+    Private Sub GridSet(GridObj As MSHFlexGrid, Optional GridNumber As Byte)
+    With GridObj
+      If GridNumber = 0 Then
+        .FormatString = "<|<|<|"
+        .Cols = 3
+        .ColWidth(0) = 0
+        .ColWidth(1) = 0
+        .ColWidth(2) = 7500
+        .TextMatrix(0, 2) = "Group Membership"
+        ElseIf GridNumber = 1 Then
+        .FormatString = "<|<|<|<|<|"
+        .Cols = 5
+        .ColWidth(0) = 0
+        .ColWidth(1) = 3000
+        .ColWidth(2) = 1500
+        .ColWidth(3) = 1500
+        .ColWidth(4) = 1500
+        .TextMatrix(0, 1) = "Name"
+        .TextMatrix(0, 2) = "Active"
+        .TextMatrix(0, 3) = "NatNum"
+        .TextMatrix(0, 4) = "NatDate"
+        ElseIf GridNumber = 2 Then
+        .FormatString = "<|<|<|<|"
+        .Cols = 4
+        .ColWidth(0) = 0
+        .ColWidth(1) = 750
+        .ColWidth(2) = 4500
+        .ColWidth(3) = 0
+        .TextMatrix(0, 1) = "Code"
+        .TextMatrix(0, 2) = "Category"
+        ElseIf GridNumber = 3 Then
+        .FormatString = "<|<|<|<|<|<|<|<|<|"
+        .Cols = 9
+        .ColWidth(0) = 0
+        .ColWidth(1) = 1200
+        .ColWidth(2) = 800
+        .ColWidth(3) = 900
+        .ColWidth(4) = 500
+        .ColWidth(5) = 725
+        .ColWidth(6) = 675
+        .ColWidth(7) = 1200
+        .ColWidth(8) = 700
+        .TextMatrix(0, 1) = "Address1"
+        .TextMatrix(0, 2) = "Address2"
+        .TextMatrix(0, 3) = "City"
+        .TextMatrix(0, 4) = "State"
+        .TextMatrix(0, 5) = "ZipCode"
+        .TextMatrix(0, 6) = "Country"
+        .TextMatrix(0, 7) = "Phone"
+        ElseIf GridNumber = 4 Then
+        .FormatString = "<|<|<|"
+        .Cols = 3
+        .ColWidth(0) = 0
+        .ColWidth(1) = 3050
+        .ColWidth(2) = 0
+        .TextMatrix(0, 1) = "EmailAdddress"
+        .TextMatrix(0, 2) = "Primary"
+        ElseIf GridNumber = 5 Then
+        .FormatString = "<|<|<|<|<|"
+        .Cols = 5
+        .ColWidth(0) = 0
+        .ColWidth(1) = 0
+        .ColWidth(2) = 2000
+        .ColWidth(3) = 1100
+        .ColWidth(4) = 6900
+        .TextMatrix(0, 2) = "Dues Paid"
+        .TextMatrix(0, 3) = "Date Paid"
+        .TextMatrix(0, 4) = "Comments"
+        ElseIf GridNumber = 6 Then
+        .FormatString = "<|<|<|"
+        .Cols = 3
+        .ColWidth(0) = 0
+        .ColWidth(1) = 1100
+        .ColWidth(2) = 2100
+        .TextMatrix(0, 1) = "Date"
+        .TextMatrix(0, 2) = "Chapter"
+        ElseIf GridNumber = 7 Then
+        .FormatString = "<|<|<|"
+        .Cols = 3
+        .ColWidth(0) = 0
+        .ColWidth(1) = 3200
+        .ColWidth(2) = 3200
+        .TextMatrix(0, 1) = "Occupation"
+        .TextMatrix(0, 2) = "Classification"
+        End If
+      .Row = 1
+      .Col = 1
+    End With
+    End Sub
+    
+    Private Sub FillEmailAddressGrid(ByVal ComVar As Long)
+    DE.EmailMain ComVar
+        FrameEmailAddress.Caption = "Email Addresses:" & DE.rsEmailMain.RecordCount
+        If Not DE.rsEmailMain.EOF Then
+            Set MSDGEmailAddress.DataSource = DE.rsEmailMain
+            txtEmailStatus.Visible = False
+            MSDGEmailAddress.Visible = True
+            cmdDelEmail.Enabled = True
+            cmdSendEmail.Enabled = True
+            If DE.rsEmailMain.RecordCount > 1 Then
+                cmdSetPrimaryEmail.Enabled = True
+            Else
+                cmdSetPrimaryEmail.Enabled = False
+            End If
+            FrameEmailText.Visible = True
+        Else
+            FrameEmailText.Visible = False
+            cmdSendEmail.Enabled = False
+            cmdDelEmail.Enabled = False
+            cmdSetPrimaryEmail.Enabled = False
+            txtEmailStatus.Visible = True
+            MSDGEmailAddress.Visible = False
+        End If
+    DE.rsEmailMain.Close
+    
+    GridSet MSDGEmailAddress, 4
+    
+    MSDGEmailAddress_Click
+    End Sub
+    
+    Private Sub MSDGEmailAddress_Click()
+    StartRoutine Me
+        GridFix MSDGEmailAddress
+        If MSDGEmailAddress.Row > 0 And MSDGEmailAddress.TextMatrix(MSDGEmailAddress.Row, 0) <> "" Then
+            MSDGEmailAddress.Tag = Trim(MSDGEmailAddress.TextMatrix(MSDGEmailAddress.Row, 0))
+            txtEEMail.Text = Trim(MSDGEmailAddress.TextMatrix(MSDGEmailAddress.Row, 1))
+        End If
+    EndRoutine Me
+    End Sub
+    Private Sub MSDGEmailAddress_DblClick()
+    MSDGEmailAddress_Click
+    End Sub
+    Private Sub MSDGEmailAddress_RowColChange()
+    MSDGEmailAddress_Click
+    End Sub
+    
+    Private Sub FillDuesGrid(ByVal ComVar As Long)
+    DE.DuesMain ComVar
+        FrameDues.Caption = "Dues Paid:" & DE.rsDuesMain.RecordCount
+        If Not DE.rsDuesMain.EOF Then
+            Set MSDGDues.DataSource = DE.rsDuesMain
+            txtDuesStatus.Visible = False
+            MSDGDues.Visible = True
+            cmdDelDues.Enabled = True
+            FrameDuesText.Visible = True
+        Else
+            FrameDuesText.Visible = False
+            cmdDelDues.Enabled = False
+            txtDuesStatus.Visible = True
+            MSDGDues.Visible = False
+        End If
+    DE.rsDuesMain.Close
+    
+    GridSet MSDGDues, 5
+    
+    MSDGDues_Click
+    End Sub
+    
+    Private Sub MSDGDues_Click()
+    StartRoutine Me
+        GridFix MSDGDues
+        If MSDGDues.Row > 0 And MSDGDues.TextMatrix(MSDGDues.Row, 0) <> "" Then
+            MSDGDues.Tag = Trim(MSDGDues.TextMatrix(MSDGDues.Row, 0))
+            txtDues.Text = Trim(MSDGDues.TextMatrix(MSDGDues.Row, 2))
+            DTPDues.Value = DateCheck(MSDGDues.TextMatrix(MSDGDues.Row, 3))
+            txtDuesComments.Text = Trim(MSDGDues.TextMatrix(MSDGDues.Row, 4))
+        End If
+    EndRoutine Me
+    End Sub
+    Private Sub MSDGDues_DblClick()
+    MSDGDues_Click
+    End Sub
+    Private Sub MSDGDues_RowColChange()
+    MSDGDues_Click
+    End Sub
+    
+    Private Sub FillAddressGrid(ByVal ComVar As Long)
+    DE.AddressMain ComVar
+        FrameAddress.Caption = "Addresses:" & DE.rsAddressMain.RecordCount
+        If Not DE.rsAddressMain.EOF Then
+            Set MSDGAddress.DataSource = DE.rsAddressMain
+            txtAddressStatus.Visible = False
+            MSDGAddress.Visible = True
+            cmdDelAddress.Enabled = True
+            If DE.rsAddressMain.RecordCount > 1 Then
+                cmdSetPrimaryAddress.Enabled = True
+            Else
+                cmdSetPrimaryAddress.Enabled = False
+            End If
+            FrameAddressText.Visible = True
+        Else
+            FrameAddressText.Visible = False
+            cmdDelAddress.Enabled = False
+            cmdSetPrimaryAddress.Enabled = False
+            txtAddressStatus.Visible = True
+            MSDGAddress.Visible = False
+        End If
+    DE.rsAddressMain.Close
+    
+    GridSet MSDGAddress, 3
+    
+    MSDGAddress_Click
+    End Sub
+    
+    Private Sub MSDGAddress_Click()
+    StartRoutine Me
+        GridFix MSDGAddress
+        If MSDGAddress.Row > 0 And MSDGAddress.TextMatrix(MSDGAddress.Row, 0) <> "" Then
+            MSDGAddress.Tag = Trim(MSDGAddress.TextMatrix(MSDGAddress.Row, 0))
+            txtSAddress1.Text = Trim(MSDGAddress.TextMatrix(MSDGAddress.Row, 1))
+            txtSAddress2.Text = Trim(MSDGAddress.TextMatrix(MSDGAddress.Row, 2))
+            txtSCity.Text = Trim(MSDGAddress.TextMatrix(MSDGAddress.Row, 3))
+            txtSState.Text = Trim(MSDGAddress.TextMatrix(MSDGAddress.Row, 4))
+            txtSZip.Text = Trim(MSDGAddress.TextMatrix(MSDGAddress.Row, 5))
+            txtSCountry.Text = Trim(MSDGAddress.TextMatrix(MSDGAddress.Row, 6))
+            txtSPhone.Text = PhoneNumberFormat((MSDGAddress.TextMatrix(MSDGAddress.Row, 7)), 1)
+            OptBusYes.Value = Trim(MSDGAddress.TextMatrix(MSDGAddress.Row, 8))
+            OptBusNo.Value = Not (OptBusYes.Value)
+        End If
+    EndRoutine Me
+    End Sub
+    Private Sub MSDGAddress_DblClick()
+    MSDGAddress_Click
+    End Sub
+    Private Sub MSDGAddress_RowColChange()
+    MSDGAddress_Click
+    End Sub
+    
+    Private Sub txtFirstName_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    
+    Private Sub txtMiddleName_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    
+    
+    Private Sub txtSearch_KeyPress(KeyAscii As Integer)
+    If KeyAscii = 13 And UserClick = True Then KeyAscii = 0: cmdSearch_Click
+    End Sub
+    
+    Private Sub FillMembershipGrid(ByVal ComVar As Long)
+    DE.MembershipMain ComVar
+        If Not DE.rsMembershipMain.EOF Then
+            Set MSDGGroups.DataSource = DE.rsMembershipMain
+            txtGroupMembershipStatus.Visible = False
+            MSDGGroups.Visible = True
+            cmdDeleteGroup.Enabled = True
+        Else
+            cmdDeleteGroup.Enabled = False
+            txtGroupMembershipStatus.Text = "No Categories Found"
+            txtGroupMembershipStatus.Visible = True
+            MSDGGroups.Visible = False
+        End If
+    DE.rsMembershipMain.Close
+    
+    GridSet MSDGGroups, 0
+    
+    MSDGGroups_Click
+    End Sub
+    
+    Private Sub MSDGGroups_Click()
+    StartRoutine Me
+        GridFix MSDGGroups
+    If MSDGGroups.Row > 0 And MSDGGroups.TextMatrix(MSDGGroups.Row, 0) <> "" Then
+        MSDGGroups.Tag = Trim(MSDGGroups.TextMatrix(MSDGGroups.Row, 0))
+        cboGroup.Text = Trim(MSDGGroups.TextMatrix(MSDGGroups.Row, 2))
+    End If
+    EndRoutine Me
+    End Sub
+    Private Sub MSDGGroups_DblClick()
+    MSDGGroups_Click
+    End Sub
+    Private Sub MSDGGroups_RowColChange()
+    MSDGGroups_Click
+    End Sub
+    
+    Private Sub FillChapterGrid(ByVal ComVar As Long)
+    DE.ChapterMain ComVar
+        If Not DE.rsChapterMain.EOF Then
+            Set MSDGChapters.DataSource = DE.rsChapterMain
+            txtChapterStatus.Visible = False
+            MSDGChapters.Visible = True
+            cmdDeleteChapter.Enabled = True
+        Else
+            cmdDeleteGroup.Enabled = False
+            txtChapterStatus.Text = "No Chapters Found"
+            txtChapterStatus.Visible = True
+            MSDGChapters.Visible = False
+        End If
+    DE.rsChapterMain.Close
+    
+    GridSet MSDGChapters, 6
+    
+    MSDGChapters_Click
+    End Sub
+    
+    Private Sub MSDGChapters_Click()
+    StartRoutine Me
+        GridFix MSDGChapters
+    If MSDGChapters.Row > 0 And MSDGChapters.TextMatrix(MSDGChapters.Row, 0) <> "" Then
+        MSDGChapters.Tag = Trim(MSDGChapters.TextMatrix(MSDGChapters.Row, 0))
+        DTPLocal.Value = Trim(MSDGChapters.TextMatrix(MSDGChapters.Row, 1))
+        txtLocalChapterNumber.Text = Trim(MSDGChapters.TextMatrix(MSDGChapters.Row, 2))
+    End If
+    EndRoutine Me
+    End Sub
+    Private Sub MSDGChapters_DblClick()
+    MSDGChapters_Click
+    End Sub
+    Private Sub MSDGChapters_RowColChange()
+    MSDGChapters_Click
+    End Sub
+    
+    Private Sub FillOccupationGrid(ByVal ComVar As Long)
+    DE.OccupationMain ComVar
+        If Not DE.rsOccupationMain.EOF Then
+            Set MSDGOccupations.DataSource = DE.rsOccupationMain
+            txtOccupationStatus.Visible = False
+            MSDGOccupations.Visible = True
+            cmdDeleteOccupation.Enabled = True
+        Else
+            cmdDeleteOccupation.Enabled = False
+            txtOccupationStatus.Text = "No Occupations Found"
+            txtOccupationStatus.Visible = True
+            MSDGOccupations.Visible = False
+        End If
+    DE.rsOccupationMain.Close
+    
+    GridSet MSDGOccupations, 7
+    
+    MSDGOccupations_Click
+    End Sub
+    
+    Private Sub MSDGOccupations_Click()
+    StartRoutine Me
+        GridFix MSDGOccupations
+    If MSDGOccupations.Row > 0 And MSDGOccupations.TextMatrix(MSDGOccupations.Row, 0) <> "" Then
+        MSDGOccupations.Tag = Trim(MSDGOccupations.TextMatrix(MSDGOccupations.Row, 0))
+        txtOccupationDesc.Text = Trim(MSDGOccupations.TextMatrix(MSDGOccupations.Row, 1))
+        txtOccupationClass.Text = Trim(MSDGOccupations.TextMatrix(MSDGOccupations.Row, 2))
+    End If
+    EndRoutine Me
+    End Sub
+    Private Sub MSDGOccupations_DblClick()
+    MSDGOccupations_Click
+    End Sub
+    Private Sub MSDGOccupations_RowColChange()
+    MSDGOccupations_Click
+    End Sub
+    
+    '------------------------------------EDITCHECKS----------------------------------------
+    Private Sub txtAddress1_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    txtSAddress1.Text = txtAddress1.Text
+    End Sub
+    Private Sub txtAddress2_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    txtSAddress2.Text = txtAddress2.Text
+    End Sub
+    Private Sub txtCity_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    txtSCity.Text = txtCity.Text
+    End Sub
+    Private Sub txtComments_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    Private Sub txtCountry_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    txtSCountry.Text = txtCountry.Text
+    End Sub
+    Private Sub txtCourseDescription_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    Private Sub txtSPhone_Change()
+    EditCheck2 cmdUpdateAddress, cmdAddAddress
+    End Sub
+    Private Sub txtSState_Change()
+    EditCheck2 cmdUpdateAddress, cmdAddAddress
+    End Sub
+    Private Sub txtEmail_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    txtEEMail.Text = txtEmail.Text
+    End Sub
+    Private Sub txtSuffix_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    Private Sub txtZipcode_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    txtSZip.Text = txtZipcode.Text
+    End Sub
+    Private Sub txtState_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    txtSState.Text = txtState.Text
+    End Sub
+    Private Sub txtPhone_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    txtSPhone.Text = txtPhone.Text
+    End Sub
+    Private Sub txtSZip_Change()
+    EditCheck2 cmdUpdateAddress, cmdAddAddress
+    End Sub
+    Private Sub txtEEMail_Change()
+    EditCheck2 cmdUpdateEmail, cmdAddEmail
+    End Sub
+    Private Sub txtSAddress_Change()
+    EditCheck3 cmdUpdateAddress, cmdAddAddress
+    End Sub
+    Private Sub txtSAddress2_Change()
+    EditCheck2 cmdUpdateAddress, cmdAddAddress
+    End Sub
+    Private Sub txtSCity_Change()
+    EditCheck2 cmdUpdateAddress, cmdAddAddress
+    End Sub
+    Private Sub txtSCountry_Change()
+    EditCheck2 cmdUpdateAddress, cmdAddAddress
+    End Sub
+    Private Sub OptBusNo_Click()
+    EditCheck3 cmdUpdateAddress, cmdAddAddress
+    End Sub
+    Private Sub OptBusYes_Click()
+    EditCheck3 cmdUpdateAddress, cmdAddAddress
+    End Sub
+    Private Sub txtNationalChapterNumber_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    Private Sub txtLocalChapterNumber_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    Private Sub DTPLocal_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    Private Sub DTPNational_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    Private Sub txtLastName_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    Private Sub chkActive_Click()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    If UserClick = True Then
+        StartRoutine Me
+        chkDeceased.Value = 0
+        EndRoutine Me
+    End If
+    End Sub
+    Private Sub chkNonMember_Click()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    If UserClick = True Then
+        StartRoutine Me
+        chkDeceased.Value = 0
+        EndRoutine Me
+    End If
+    End Sub
+    Private Sub chkWidowed_Click()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    If UserClick = True Then
+        StartRoutine Me
+        chkDeceased.Value = 0
+        EndRoutine Me
+    End If
+    End Sub
+    Private Sub chkDeceased_Click()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    If UserClick = True Then
+        StartRoutine Me
+            chkWidowed.Value = 0
+            chkNonMember.Value = 0
+            chkActive.Value = 0
+        EndRoutine Me
+    End If
+    End Sub
+    Private Sub txtOccupationClass_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    Private Sub txtOccupationDesc_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    Private Sub chkBus_Click()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    OptBusYes.Value = CBool(chkBus.Value)
+    'OptBusNo.Value = Not CBool(chkBus.Value)
+    End Sub
+    Private Sub txtDuesComments_Change()
+    EditCheck4 cmdUpdateDues, cmdAddDues
+    End Sub
+    Private Sub txtDues_Change()
+    EditCheck4 cmdUpdateDues, cmdAddDues
+    End Sub
+    Private Sub DTPDues_Change()
+    EditCheck4 cmdUpdateDues, cmdAddDues
+    End Sub
+    Private Sub txtPrefix_Change()
+    EditCheck cmdUpdate, cmdAdd, cmdCancel
+    End Sub
+    '---------------------------------------------------------------------------------
+    
+
+End Class
