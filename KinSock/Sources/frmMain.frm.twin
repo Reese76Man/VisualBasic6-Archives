@@ -1,0 +1,183 @@
+[FormDesignerId("5C3E8ACA-0A78-4BE2-AB97-9B2DB18AEB85")]
+[ClassId("308DF19A-486F-4A0F-8E13-94315F16E8F5")]
+[InterfaceId("0F27CCF6-5E92-4F57-9F6B-D2C992EFE162")]
+[EventInterfaceId("526BA867-58B5-4854-B44A-750AD7D33E9E")]
+Class frmMain
+    Private WithEvents wsk As CSocketArray
+    Attribute VB_Name = "frmMain"
+    Attribute VB_GlobalNameSpace = False
+    Attribute VB_Creatable = False
+    Attribute VB_PredeclaredId = True
+    Attribute VB_Exposed = False
+
+    Private Sub Form_Load()
+        Set wsk = New CSocketArray
+    End Sub
+
+    Private Sub cmdStart_Click()
+        SockSetup
+    End Sub
+
+    Private Sub SockSetup()
+        Dim t As Long
+        
+        PicBox.Print "Starting Init..."
+        PicBox.Print "Host:" & wsk(0).LocalHostName
+        PicBox.Print "IP:" & wsk(0).LocalIP
+        PicBox.Print "Assigning Listen Ports:..."
+        
+        For t = 1 To 1000
+            wsk.Add t
+            wsk(t).LocalPort = t
+            On Error Resume Next
+            wsk(t).Listen
+            If Err.Number <> 0 Then
+                PicBox.Print "Port " & t & " failed (" & Err.Number & "): " & Err.Description
+                Err.Clear
+                wsk.Remove t   ' Clean up the unused socket so it doesn't waste a handle!
+            End If
+            On Error GoTo 0
+            DoEvents           ' Keeps the UI responsive while opening 1,000 sockets
+        Next t
+        PicBox.Print "Done!"
+    End Sub
+
+    Private Sub Form_Unload(Cancel As Integer)
+        If Not wsk Is Nothing Then
+            wsk.Clear
+            Set wsk = Nothing
+        End If
+    End Sub
+
+    Private Sub WSK_ConnectionRequest(Index As Integer, ByVal requestID As Long)
+        PicBox.Print "Incoming Request on Port:" & Index
+    End Sub
+End Class
+
+Class CSocketArray
+    Option Explicit
+
+    Public Event CloseSck(Index As Integer)
+    Public Event Connect(Index As Integer)
+    Public Event ConnectionRequest(Index As Integer, ByVal requestID As Long)
+    Public Event DataArrival(Index As Integer, ByVal bytesTotal As Long)
+    Public Event Error(Index As Integer, ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    Public Event SendComplete(Index As Integer)
+    Public Event SendProgress(Index As Integer, ByVal bytesSent As Long, ByVal bytesRemaining As Long)
+
+    Private mSockets As New Collection
+
+    [DefaultMember]
+    Public Property Get Item(ByVal Index As Integer) As CSocketMaster
+        If Not Exists(Index) Then Add Index
+        Dim wrapper As CSocketItem
+        Set wrapper = mSockets(CStr(Index))
+        Set Item = wrapper.Socket
+    End Property
+
+    Public Sub Add(ByVal Index As Integer)
+        If Exists(Index) Then Exit Sub
+        Dim wrapper As New CSocketItem
+        wrapper.Init Me, Index
+        mSockets.Add wrapper, CStr(Index)
+    End Sub
+
+    Public Function Exists(ByVal Index As Integer) As Boolean
+        On Error Resume Next
+        Dim obj As Object
+        Set obj = mSockets(CStr(Index))
+        Exists = (Err.Number = 0)
+        On Error GoTo 0
+    End Function
+
+    Public Sub Remove(ByVal Index As Integer)
+        If Exists(Index) Then
+            Dim wrapper As CSocketItem
+            Set wrapper = mSockets(CStr(Index))
+            wrapper.Socket.CloseSck
+            mSockets.Remove CStr(Index)
+        End If
+    End Sub
+
+    Public Sub Clear()
+        Dim wrapper As CSocketItem
+        For Each wrapper In mSockets
+            wrapper.Socket.CloseSck
+        Next
+        Set mSockets = New Collection
+    End Sub
+
+    Friend Sub RaiseConnectionRequest(ByVal Index As Integer, ByVal requestID As Long)
+        RaiseEvent ConnectionRequest(Index, requestID)
+    End Sub
+
+    Friend Sub RaiseDataArrival(ByVal Index As Integer, ByVal bytesTotal As Long)
+        RaiseEvent DataArrival(Index, bytesTotal)
+    End Sub
+
+    Friend Sub RaiseCloseSck(ByVal Index As Integer)
+        RaiseEvent CloseSck(Index)
+    End Sub
+
+    Friend Sub RaiseConnect(ByVal Index As Integer)
+        RaiseEvent Connect(Index)
+    End Sub
+
+    Friend Sub RaiseError(ByVal Index As Integer, ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+        RaiseEvent Error(Index, Number, Description, Scode, Source, HelpFile, HelpContext, CancelDisplay)
+    End Sub
+
+    Friend Sub RaiseSendComplete(ByVal Index As Integer)
+        RaiseEvent SendComplete(Index)
+    End Sub
+
+    Friend Sub RaiseSendProgress(ByVal Index As Integer, ByVal bytesSent As Long, ByVal bytesRemaining As Long)
+        RaiseEvent SendProgress(Index, bytesSent, bytesRemaining)
+    End Sub
+End Class
+
+Class CSocketItem
+    Option Explicit
+
+    Private WithEvents mSocket As CSocketMaster
+    Private mParent As CSocketArray
+    Private mIndex As Integer
+
+    Public Sub Init(Parent As CSocketArray, ByVal Index As Integer)
+        Set mParent = Parent
+        mIndex = Index
+        Set mSocket = New CSocketMaster
+    End Sub
+
+    Public Property Get Socket() As CSocketMaster
+        Set Socket = mSocket
+    End Property
+
+    Private Sub mSocket_ConnectionRequest(ByVal requestID As Long)
+        mParent.RaiseConnectionRequest mIndex, requestID
+    End Sub
+
+    Private Sub mSocket_DataArrival(ByVal bytesTotal As Long)
+        mParent.RaiseDataArrival mIndex, bytesTotal
+    End Sub
+
+    Private Sub mSocket_CloseSck()
+        mParent.RaiseCloseSck mIndex
+    End Sub
+
+    Private Sub mSocket_Connect()
+        mParent.RaiseConnect mIndex
+    End Sub
+
+    Private Sub mSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+        mParent.RaiseError mIndex, Number, Description, Scode, Source, HelpFile, HelpContext, CancelDisplay
+    End Sub
+
+    Private Sub mSocket_SendComplete()
+        mParent.RaiseSendComplete mIndex
+    End Sub
+
+    Private Sub mSocket_SendProgress(ByVal bytesSent As Long, ByVal bytesRemaining As Long)
+        mParent.RaiseSendProgress mIndex, bytesSent, bytesRemaining
+    End Sub
+End Class
