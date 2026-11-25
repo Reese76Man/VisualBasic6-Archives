@@ -6,5 +6,6 @@ This period marks part of my life where the development skills started paying th
 
 <pre> 
   [KINSOCK]              -  A down and dirty port sniffer.  Opens the first 1000 ports it can and just listens for incoming traffic.
+  [LAZYSAB]              -  I may or may not have allegedly whipped this little thing up to DDOS an annoying coworker.  That would go against the sacred Systems Engineer's autodidact oath.. "Thou shall not use out-of-scope dark knowledge to enact revenge upon the user"
   [RETIREMENT DATABASE]  -  As advertised!  This was a VB6/Access/Crystal Reports program to manage an onslaught of incoming retirements for a friend of mine.  Not sure if he even used it!  It has a lot of my signature VB6 style, which meant business functional over style, cranked past overdrive!
 </pre>
