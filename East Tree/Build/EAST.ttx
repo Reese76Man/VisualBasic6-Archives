@@ -1,0 +1,14 @@
+; Field definition file for table: ADORecordset
+EntityID	long		1
+Taxable	currency		1.00
+TaxOwed	currency		1.00
+TaxPaid	currency		1.00
+Company	string	100	string sample value
+AltNumber	string	50	string sample value
+TaxRate	currency		1.00
+FirstName	string	100	string sample value
+LastName	string	100	string sample value
+Balance	currency		1.00
+Paid	currency		1.00
+Owed	currency		1.00
+ReportOptions	memo		memo sample data
