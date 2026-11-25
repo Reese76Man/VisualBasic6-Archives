@@ -5,6 +5,7 @@ This period marks part of my life where the development skills started paying th
 ---------------------------------------------------------------------------------------
 
 <pre> 
+  [EAST TREE]            -  When I first went solo with East Tree LLC, I needed software to keep track of clients, invoices, and taxes... so I created this SQL-Backed VB6 gem.  It worked great for the few years I used it.
   [KINSOCK]              -  A down and dirty port sniffer.  Opens the first 1000 ports it can and just listens for incoming traffic.
   [LAZYSAB]              -  I may or may not have allegedly whipped this little thing up to DDOS an annoying coworker.  That would go against the sacred Systems Engineer's autodidact oath.. "Thou shall not use out-of-scope dark knowledge to enact revenge upon the user"
   [MISCELLANEOUS]        -  Odd and ends of what's left of unfinished projects.  What was once my burden now takes up space on GitHub's storage... this should help push entropy along just a wee bit more!
